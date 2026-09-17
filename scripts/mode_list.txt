@@ -1,0 +1,5 @@
+deepseek-ai/DeepSeek-V4.1-Flash
+Wan-AI/Wan2.2-Animate-14B
+Qwen/Qwen-Image
+HiDream-ai/HiDream-O1-Image
+MiniMaxAI/MiniMax-Music3

@@ -1,0 +1,20 @@
+.venv-onnx/
+.venv-genai/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+models/**/.cache/
+
+# Local checkpoints and generated artifacts are intentionally not versioned.
+models/*
+!models/README.md
+reports/
+outputs/
+
+# Local archives, spreadsheets, and OS/editor metadata.
+*.tar.gz
+*.zip
+*.xlsx
+*.ndjson
+.DS_Store
+.agents/

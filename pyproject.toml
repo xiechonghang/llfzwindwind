@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hf-onnx-pipeline"
+version = "0.1.0"
+description = "Revision-pinned Hugging Face downloads and validated ONNX export"
+requires-python = ">=3.11"
+dependencies = ["huggingface-hub>=0.34,<2", "onnx>=1.17,<2"]
+
+[project.optional-dependencies]
+export = ["torch>=2.7,<3", "transformers>=4.51,<6", "optimum-onnx[onnxruntime]>=0.1,<1", "safetensors>=0.5", "numpy>=1.26", "onnxscript>=0.3"]
+genai = ["torch>=2.7,<3", "transformers>=5,<6", "onnxruntime-genai", "onnxruntime", "safetensors>=0.5", "onnxscript>=0.3"]
+test = ["pytest>=8", "pyyaml>=6"]
+
+[project.scripts]
+hf-onnx = "hf_onnx_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: local PyTorch to ONNX numerical smoke test"]
