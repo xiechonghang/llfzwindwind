@@ -30,7 +30,7 @@ BF16 参数会生成 BF16 ONNX initializer，不会静默转换成 FP32。完整
 
 ## 准备源码仓库
 
-GitHub 主仓库不直接存储 Transformers 和 Diffusers 的源码内容。克隆本仓库后，在根目录执行下面的一条命令即可初始化两个源码仓库，并检出工程锁定的提交：
+GitHub 主仓库不直接存储 Transformers 和 Diffusers 的源码内容。克隆本仓库后，在根目录执行下面的一条命令即可初始化两个源码仓库，并更新到各自远端 `main` 分支的最新提交：
 
 ```bash
 python3 scripts/prepare_sources.py
@@ -42,7 +42,7 @@ python3 scripts/prepare_sources.py
 python3 scripts/prepare_sources.py --archive-mode
 ```
 
-源码版本记录在 [`sources/sources.lock.json`](sources/sources.lock.json) 中。需要准备 HiDream 官方源码时，仍可使用主仓库的子模块命令：
+源码仓库地址和分支记录在 [`sources/sources.json`](sources/sources.json) 中。每次重新运行准备脚本都会拉取最新提交，因此当前源码状态不保证历史可复现。需要准备 HiDream 官方源码时，仍可使用主仓库的子模块命令：
 
 ```bash
 git submodule update --init --recursive sources/HiDream-O1-Image

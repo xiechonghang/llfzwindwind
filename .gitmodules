@@ -1,9 +1,11 @@
 [submodule "sources/transformers"]
 	path = sources/transformers
 	url = https://github.com/huggingface/transformers.git
+	branch = main
 [submodule "sources/diffusers"]
 	path = sources/diffusers
 	url = https://github.com/huggingface/diffusers.git
+	branch = main
 [submodule "sources/HiDream-O1-Image"]
 	path = sources/HiDream-O1-Image
 	url = https://github.com/HiDream-ai/HiDream-O1-Image.git

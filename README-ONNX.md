@@ -8,7 +8,7 @@
 
 使用 Python 3.11 或 3.12，独立安装，避免混用本仓库 `sources/transformers/` 和 `sources/diffusers/` 中用于分析的源码。
 
-从 GitHub 克隆本仓库后，先准备源码子模块：
+从 GitHub 克隆本仓库后，先准备源码子模块；之后需要更新源码时可以重复执行，这会拉取 Transformers 和 Diffusers 的最新 `main` 提交：
 
 ```bash
 python3 scripts/prepare_sources.py

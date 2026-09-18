@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Prepare the core Hugging Face source checkouts used by this repository.
+"""Prepare the current main branches of the core Hugging Face source checkouts.
 
-In a normal Git clone this initializes the two submodules at the commits recorded
-by the parent repository.  It also supports source archives, where submodule
-metadata is unavailable, by cloning and checking out the commits in
-``sources/sources.lock.json``.
+In a normal Git clone this initializes and updates the two submodules from their
+configured remote branches. It also supports source archives, where submodule
+metadata is unavailable, by cloning the branches described in
+``sources/sources.json``.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCK_PATH = ROOT / "sources" / "sources.lock.json"
+SOURCE_CONFIG = ROOT / "sources" / "sources.json"
 SOURCE_NAMES = ("transformers", "diffusers")
 
 
@@ -47,17 +47,16 @@ def verify_source(name: str, spec: dict[str, str]) -> None:
         revision = output(["git", "-C", str(path), "rev-parse", "HEAD"])
     except (OSError, subprocess.CalledProcessError) as exc:
         raise RuntimeError(f"{name} source is not a Git checkout: {path}") from exc
-    if revision != spec["commit"]:
-        raise RuntimeError(
-            f"{name} is at {revision}, expected locked commit {spec['commit']}"
-        )
     print(f"ready: {name} ({revision[:12]}) -> {path}")
 
 
 def prepare_from_submodules(specs: dict[str, dict[str, str]]) -> None:
     paths = [specs[name]["path"] for name in SOURCE_NAMES]
     run(["git", "submodule", "sync", "--", *paths], cwd=ROOT)
-    run(["git", "submodule", "update", "--init", "--recursive", "--", *paths], cwd=ROOT)
+    run(
+        ["git", "submodule", "update", "--init", "--remote", "--recursive", "--", *paths],
+        cwd=ROOT,
+    )
 
 
 def prepare_from_archive(specs: dict[str, dict[str, str]]) -> None:
@@ -71,12 +70,21 @@ def prepare_from_archive(specs: dict[str, dict[str, str]]) -> None:
                 raise RuntimeError(
                     f"{path} already exists but is not a Git checkout; remove it or choose another directory"
                 )
-            run(["git", "-C", str(path), "fetch", "--depth=1", "origin", spec["commit"]])
+            run(["git", "-C", str(path), "fetch", "origin", spec["branch"]])
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
-            run(["git", "clone", "--filter=blob:none", "--no-checkout", spec["url"], str(path)])
-            run(["git", "-C", str(path), "fetch", "--depth=1", "origin", spec["commit"]])
-        run(["git", "-C", str(path), "checkout", "--detach", spec["commit"]])
+            run(
+                [
+                    "git",
+                    "clone",
+                    "--filter=blob:none",
+                    "--branch",
+                    spec["branch"],
+                    spec["url"],
+                    str(path),
+                ]
+            )
+        run(["git", "-C", str(path), "checkout", "--detach", f"origin/{spec['branch']}"])
 
 
 def main() -> int:
@@ -84,17 +92,17 @@ def main() -> int:
     parser.add_argument(
         "--archive-mode",
         action="store_true",
-        help="force direct clone mode, useful when the project came from a GitHub ZIP archive",
+        help="force direct clone/update mode, useful for a GitHub ZIP archive",
     )
     args = parser.parse_args()
 
-    if not LOCK_PATH.is_file():
-        print(f"missing source lock file: {LOCK_PATH}", file=sys.stderr)
+    if not SOURCE_CONFIG.is_file():
+        print(f"missing source configuration: {SOURCE_CONFIG}", file=sys.stderr)
         return 2
-    specs = json.loads(LOCK_PATH.read_text(encoding="utf-8"))
+    specs = json.loads(SOURCE_CONFIG.read_text(encoding="utf-8"))
     missing = [name for name in SOURCE_NAMES if name not in specs]
     if missing:
-        print(f"source lock is missing: {', '.join(missing)}", file=sys.stderr)
+        print(f"source configuration is missing: {', '.join(missing)}", file=sys.stderr)
         return 2
 
     try:
