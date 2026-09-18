@@ -25,5 +25,5 @@ BF16 参数会生成 BF16 ONNX initializer，不会静默转换成 FP32。完整
 
 - `onnx_trans/`：按层导出 ONNX 的工程和 Qwen-Image 适配器。
 - `src/`、`scripts/`、`tests/`：原有模型下载、导出、验证和测试代码。
-- `transformers/`、`sources/`：通过 submodule 引用的上游源码。
+- `sources/transformers/`、`sources/diffusers/`：通过 submodule 引用的上游源码。
 - `models/`、`reports/`、`outputs/`：本地数据和生成产物，不提交模型权重或报告文件。

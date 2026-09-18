@@ -422,7 +422,7 @@ def main():
     <tr><td>WanTransformerBlock.forward</td><td><a href="../../../sources/diffusers/src/diffusers/models/transformers/transformer_wan.py#L462">transformer_wan.py:L462</a></td><td>AdaLN/gated residual topology</td></tr>
     <tr><td>WanAttnProcessor.__call__</td><td><a href="../../../sources/diffusers/src/diffusers/models/transformers/transformer_wan.py#L78">transformer_wan.py:L78</a></td><td>QKV、RoPE、attention dispatch</td></tr>
     <tr><td>FeedForward / GELU</td><td><a href="../../../sources/diffusers/src/diffusers/models/attention.py#L1682">attention.py:L1682</a> · <a href="../../../sources/diffusers/src/diffusers/models/activations.py#L65">activations.py:L65</a></td><td>dense FFN 叶算子</td></tr>
-    <tr><td>UMT5EncoderModel</td><td><a href="../../../transformers/src/transformers/models/umt5/modeling_umt5.py#L1084">modeling_umt5.py:L1084</a></td><td>24-layer prompt encoder</td></tr>
+    <tr><td>UMT5EncoderModel</td><td><a href="../../../sources/transformers/src/transformers/models/umt5/modeling_umt5.py#L1084">modeling_umt5.py:L1084</a></td><td>24-layer prompt encoder</td></tr>
     <tr><td>AutoencoderKLWan.decode</td><td><a href="../../../sources/diffusers/src/diffusers/models/autoencoders/autoencoder_kl_wan.py#L1187">autoencoder_kl_wan.py:L1187</a></td><td>latent → video，causal-conv feature cache</td></tr>
   </tbody></table>
   <h3>可编辑 Excalidraw 场景</h3>
@@ -472,7 +472,7 @@ def main():
             "sources/diffusers/src/diffusers/models/attention.py",
             "sources/diffusers/src/diffusers/models/activations.py",
             "sources/diffusers/src/diffusers/models/autoencoders/autoencoder_kl_wan.py",
-            "transformers/src/transformers/models/umt5/modeling_umt5.py",
+            "sources/transformers/src/transformers/models/umt5/modeling_umt5.py",
         ],
     }
     (REPORT_DIR / "evidence.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -491,7 +491,7 @@ def main():
         "transformers": {
             "commit": transformers_commit,
             "diffusers_commit": diffusers_commit,
-            "source_directories": ["transformers/src/transformers/models/umt5", "sources/diffusers/src/diffusers/pipelines/wan", "sources/diffusers/src/diffusers/models/transformers"],
+            "source_directories": ["sources/transformers/src/transformers/models/umt5", "sources/diffusers/src/diffusers/pipelines/wan", "sources/diffusers/src/diffusers/models/transformers"],
             "compatibility_notes": [
                 "Checkpoint records diffusers 0.35.0.dev0 and transformers 4.48.0.dev0; local source revisions are newer.",
                 "The skill collector expects a top-level config.json and does not directly support this composite Diffusers repository.",
@@ -536,7 +536,7 @@ def main():
             {"symbol":"WanAttnProcessor.__call__","path":"sources/diffusers/src/diffusers/models/transformers/transformer_wan.py","line":78,"role":"self/cross attention"},
             {"symbol":"FeedForward.forward","path":"sources/diffusers/src/diffusers/models/attention.py","line":1736,"role":"dense FFN"},
             {"symbol":"GELU.forward","path":"sources/diffusers/src/diffusers/models/activations.py","line":87,"role":"FFN input projection and activation"},
-            {"symbol":"UMT5EncoderModel.forward","path":"transformers/src/transformers/models/umt5/modeling_umt5.py","line":1129,"role":"text encoder wrapper"},
+            {"symbol":"UMT5EncoderModel.forward","path":"sources/transformers/src/transformers/models/umt5/modeling_umt5.py","line":1129,"role":"text encoder wrapper"},
             {"symbol":"AutoencoderKLWan._decode","path":"sources/diffusers/src/diffusers/models/autoencoders/autoencoder_kl_wan.py","line":1187,"role":"video decode and convolution feature cache"},
         ],
         "graph_code_pairs": [

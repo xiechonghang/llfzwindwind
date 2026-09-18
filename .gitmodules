@@ -1,5 +1,5 @@
-[submodule "transformers"]
-	path = transformers
+[submodule "sources/transformers"]
+	path = sources/transformers
 	url = https://github.com/huggingface/transformers.git
 [submodule "sources/transformers-v4.53.1"]
 	path = sources/transformers-v4.53.1

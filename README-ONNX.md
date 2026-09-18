@@ -6,7 +6,7 @@
 
 ## 环境
 
-使用 Python 3.11 或 3.12，独立安装，避免混用本仓库 `transformers/` 和 `sources/` 中用于分析的源码。
+使用 Python 3.11 或 3.12，独立安装，避免混用本仓库 `sources/transformers/` 和 `sources/diffusers/` 中用于分析的源码。
 
 ```bash
 python3.12 -m venv .venv-onnx

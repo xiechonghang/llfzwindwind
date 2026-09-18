@@ -413,7 +413,7 @@ Qwen3VLForConditionalGeneration.lm_head               ×1（图像生成分支�
     <tr><td>_forward_generation</td><td><a href="../../../sources/HiDream-O1-Image/models/qwen3_vl_transformers.py#L1400">qwen3_vl_transformers.py:L1400</a></td><td>统一序列与像素预测</td></tr>
     <tr><td>_run_decoder_flash</td><td><a href="../../../sources/HiDream-O1-Image/models/qwen3_vl_transformers.py#L1257">qwen3_vl_transformers.py:L1257</a></td><td>mixed causal/full two-pass attention</td></tr>
     <tr><td>Qwen3VLTextDecoderLayer</td><td><a href="../../../sources/HiDream-O1-Image/models/qwen3_vl_transformers.py#L496">qwen3_vl_transformers.py:L496</a></td><td>36 层统一 residual block</td></tr>
-    <tr><td>标准 Transformers 对照</td><td><a href="../../../transformers/src/transformers/models/qwen3_vl/modeling_qwen3_vl.py#L1260">modeling_qwen3_vl.py:L1260</a></td><td>不含 HiDream 的 raw-pixel generation fork</td></tr>
+    <tr><td>标准 Transformers 对照</td><td><a href="../../../sources/transformers/src/transformers/models/qwen3_vl/modeling_qwen3_vl.py#L1260">modeling_qwen3_vl.py:L1260</a></td><td>不含 HiDream 的 raw-pixel generation fork</td></tr>
   </tbody></table>
   <h3>可编辑 Excalidraw 场景</h3>
   <p><a href="diagrams/01-top-level.excalidraw">顶层</a> · <a href="diagrams/02-diagram.excalidraw">modeling.py 调用树</a> · <a href="diagrams/03-diagram.excalidraw">视觉条件</a> · <a href="diagrams/02-decoder-layer.excalidraw">Decoder</a> · <a href="diagrams/04-full-attention.excalidraw">Attention</a> · <a href="diagrams/06-diagram.excalidraw">FFN</a> · <a href="diagrams/07-residual-norm.excalidraw">残差</a> · <a href="diagrams/08-kv-cache.excalidraw">KV cache</a></p>
@@ -451,7 +451,7 @@ Qwen3VLForConditionalGeneration.lm_head               ×1（图像生成分支�
         },
         "transformers": {
             "commit": "36deb0b53ed0863f4b4dfdea23dcaec7f3df3701",
-            "source_directories": ["transformers/src/transformers/models/qwen3_vl"],
+            "source_directories": ["sources/transformers/src/transformers/models/qwen3_vl"],
             "official_runtime_commit": "2c2d29ff729e48f33e41f49edfdbd81d5ac103b4",
             "compatibility_notes": [
                 "Config says transformers 4.57.0.dev0; official runtime is a modified copied Qwen3-VL implementation.",

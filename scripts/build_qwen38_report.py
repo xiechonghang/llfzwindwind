@@ -60,7 +60,7 @@ def top_level_pair() -> str:
         flow([(605,288),(645,288)]),
     ]
     return pair("顶层多模态与 4-stream 文本路径", svg(ns, fs, 360),
-        "transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 2249, 2464, "source-aligned derivation",
+        "sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 2249, 2464, "source-aligned derivation",
         [("TL1", "if inputs_embeds is None: inputs_embeds = self.get_input_embeddings()(input_ids)"),
          ("TL2", "inputs_embeds = self.language_model.embed_tokens(input_ids)"),
          ("TL3", "inputs_embeds = inputs_embeds.masked_scatter(image_mask, image_embeds)"),
@@ -81,7 +81,7 @@ def decoder_pair(prefix: str, title: str, mixer: str) -> str:
         node(prefix+"7", "tensor-node", 675, 180, 125, 86, "layer output", "[B,S,10240]"),
     ]
     fs = [flow([(190,74),(240,74)]),flow([(425,74),(480,74)]),flow([(635,74),(675,74)]),flow([(738,116),(738,145),(240,223)]),flow([(425,223),(480,223)]),flow([(635,223),(675,223)])]
-    return pair(title, svg(ns, fs, 300), "transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 1192, 1245, "source-aligned derivation",
+    return pair(title, svg(ns, fs, 300), "sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 1192, 1245, "source-aligned derivation",
         [(prefix+"1", "hidden_states: torch.Tensor  # [B,S,4*H]"),
          (prefix+"2", "hidden_states, hyper_input, injection_weights = self.attn_hyper_connection(hidden_states)"),
          (prefix+"3", ("hidden_states = self.linear_attn(hidden_states, cache_params=past_key_values, ...)" if prefix == "DL" else "hidden_states, _ = self.self_attn(hidden_states, position_embeddings, ..., past_key_values=...)")),
@@ -117,7 +117,7 @@ def full_attention_pair() -> str:
         flow([(365,163),(365,478),(400,478)]),flow([(575,478),(615,482)])
     ]
     return pair("QSA：索引器分支与 gated GQA 主分支", svg(ns, fs, 550, [(282,118,"Q / gate"),(282,223,"K"),(282,328,"V")]),
-        "transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 611, 839, "source-aligned derivation + eager fallback",
+        "sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 611, 839, "source-aligned derivation + eager fallback",
         [("FA1", "batch_size, seq_length, _ = hidden_states.shape"),
          ("FA2", "qk = self.index_qk_proj(hidden_states); q, token_k = torch.split(qk, [4*128, 1*128], dim=-1)"),
          ("FA3", "key_groups = raw_keys.index_select(...).view(num_complete_blocks, 4, 128); pooled_keys = key_groups.float().mean(dim=1)"),
@@ -150,7 +150,7 @@ def linear_attention_pair() -> str:
     ]
     fs = [flow([(160,67),(200,43)]),flow([(160,67),(200,143)]),flow([(160,67),(180,243),(200,243)]),flow([(375,43),(415,43)]),flow([(590,43),(590,110)]),flow([(590,148),(630,148)]),flow([(375,143),(610,143),(630,280)]),flow([(375,243),(415,253)]),flow([(590,253),(630,168)]),flow([(715,200),(715,245)]),flow([(715,331),(590,393)]),flow([(590,393),(630,397)])]
     return pair("Gated DeltaNet：卷积 + 48-head recurrent state", svg(ns, fs, 465),
-        "transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 403, 563, "source-aligned derivation + recurrent fallback",
+        "sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 403, 563, "source-aligned derivation + recurrent fallback",
         [("LA1", "hidden_states = apply_mask_to_padding_states(hidden_states, attention_mask)"),
          ("LA2", "mixed_qkv = self.in_proj_qkv(hidden_states).transpose(1, 2)"),
          ("LA3", "z = self.in_proj_z(hidden_states).reshape(B, S, 48, 128)"),
@@ -178,7 +178,7 @@ def moe_pair() -> str:
     ]
     fs = [flow([(165,102),(210,53)]),flow([(375,53),(420,53)]),flow([(165,102),(210,168)]),flow([(595,53),(595,95),(507,115)]),flow([(375,168),(420,153)]),flow([(595,153),(630,153)]),flow([(715,191),(715,225),(595,278)]),flow([(165,102),(190,323),(210,323)]),flow([(375,323),(630,313)]),flow([(595,278),(630,313)])]
     return pair("MoE：router 与 token payload 分离，10 routed + 1 shared", svg(ns, fs, 400),
-        "transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 842, 937, "source-aligned derivation",
+        "sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 842, 937, "source-aligned derivation",
         [("MOE1", "hidden_states_reshaped = hidden_states.view(-1, hidden_dim)"),
          ("MOE2", "router_logits = F.linear(hidden_states, self.weight)  # [T,512]"),
          ("MOE3", "router_probs = softmax(router_logits, dtype=float, dim=-1); router_top_value, router_indices = torch.topk(router_probs, 10, dim=-1); router_top_value /= router_top_value.sum(-1, keepdim=True)"),
@@ -206,7 +206,7 @@ def residual_pair() -> str:
     ]
     fs = [flow([(180,52),(220,48)]),flow([(400,48),(445,48)]),flow([(400,48),(640,48)]),flow([(525,91),(525,125)]),flow([(605,168),(640,168)]),flow([(720,91),(720,125)]),flow([(180,313),(220,313)]),flow([(400,313),(445,305)]),flow([(605,305),(640,313)]),flow([(720,356),(720,390)])]
     return pair("Gated Residual 与第 2 层 PLE 注入", svg(ns, fs, 490),
-        "transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 941, 1190, "source-aligned derivation",
+        "sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py", 941, 1190, "source-aligned derivation",
         [("RN1", "hyper_input_normed = self.hc_norm(hyper_input)  # [...,10240] grouped by H=2560"),
          ("RN2", "input_mix_weight = sigmoid(self.input_mix_weight_up(silu(self.input_mix_weight_down(hyper_input_normed) / 4)))"),
          ("RN3", "mixed_input = (input_mix_weight.unflatten(-1,(4,2560)) * hyper_input_normed.unflatten(-1,(4,2560))).mean(dim=-2)"),
@@ -234,7 +234,7 @@ def cache_pair() -> str:
     ]
     fs = [flow([(170,67),(210,43)]),flow([(170,67),(190,143),(210,143)]),flow([(170,67),(190,243),(210,243)]),flow([(385,43),(430,88)]),flow([(385,143),(430,88)]),flow([(385,243),(430,88)]),flow([(170,67),(190,373),(210,373)]),flow([(385,373),(430,373)]),flow([(170,67),(190,488),(210,488)]),flow([(605,88),(640,233)]),flow([(605,373),(640,233)]),flow([(385,488),(640,233)])]
     return pair("Hybrid cache：QSA 的 dense history + DeltaNet 常数状态 + PLE", svg(ns, fs, 565),
-        "transformers/src/transformers/cache_utils.py", 107, 1090, "source-aligned derivation",
+        "sources/transformers/src/transformers/cache_utils.py", 107, 1090, "source-aligned derivation",
         [("KV1", "if use_cache and past_key_values is None: past_key_values = DynamicCache(config=self.config)"),
          ("KV2K", "self.keys = torch.cat([self.keys, key_states], dim=-2)"),
          ("KV2V", "self.values = torch.cat([self.values, value_states], dim=-2)"),
@@ -294,15 +294,15 @@ def body() -> str:
 
 <section id="sources"><h2>9. 源码对应与可编辑图</h2><p class="lead"><b>结论：</b>运行实现是自动生成的 <code>modeling_qwen4_exp.py</code>；<code>modular_qwen4_exp.py</code>解释了它从 Qwen3.5/Qwen3-Next 家族继承的作者层结构。所有关键运行分支都在本地 generated modeling 文件中可直接追踪。</p>
 <table><thead><tr><th>符号</th><th>位置</th><th>作用</th></tr></thead><tbody>
-<tr><td>Qwen4ExpTextConfig.__post_init__</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/configuration_qwen4_exp.py#L166">configuration L166</a></td><td>把 full_attention 重写成 qwen_sparse_attention；设 3 个 conv-state slots</td></tr>
-<tr><td>Qwen4ExpTextGatedDeltaNet.forward</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L450">modeling L450</a></td><td>线性注意力、卷积与 recurrent cache</td></tr>
-<tr><td>Qwen4ExpTextQSAIndexer.forward</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L631">modeling L631</a></td><td>微块池化、top-512 和 selected-token mask</td></tr>
-<tr><td>Qwen4ExpTextAttention.forward</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L785">modeling L785</a></td><td>gated GQA、RoPE、KV update、attention interface</td></tr>
-<tr><td>Qwen4ExpTextSparseMoeBlock.forward</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L927">modeling L927</a></td><td>routed/shared expert 并行路径</td></tr>
-<tr><td>Qwen4ExpTextGatedResidual.forward</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L952">modeling L952</a></td><td>逐元素 read gate 与逐路 write gate</td></tr>
-<tr><td>Qwen4ExpTextPLELayer.forward</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L1169">modeling L1169</a></td><td>n-gram features、stream gating 与 dilated conv</td></tr>
-<tr><td>Qwen4ExpTextModel.forward</td><td><a href="../../../transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L1337">modeling L1337</a></td><td>mask、position cache、4-stream loop、最终 mix</td></tr>
-<tr><td>DynamicIndexedLayer</td><td><a href="../../../transformers/src/transformers/cache_utils.py#L319">cache_utils L319</a></td><td>dense K/V 外加 indexer key history</td></tr>
+<tr><td>Qwen4ExpTextConfig.__post_init__</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/configuration_qwen4_exp.py#L166">configuration L166</a></td><td>把 full_attention 重写成 qwen_sparse_attention；设 3 个 conv-state slots</td></tr>
+<tr><td>Qwen4ExpTextGatedDeltaNet.forward</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L450">modeling L450</a></td><td>线性注意力、卷积与 recurrent cache</td></tr>
+<tr><td>Qwen4ExpTextQSAIndexer.forward</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L631">modeling L631</a></td><td>微块池化、top-512 和 selected-token mask</td></tr>
+<tr><td>Qwen4ExpTextAttention.forward</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L785">modeling L785</a></td><td>gated GQA、RoPE、KV update、attention interface</td></tr>
+<tr><td>Qwen4ExpTextSparseMoeBlock.forward</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L927">modeling L927</a></td><td>routed/shared expert 并行路径</td></tr>
+<tr><td>Qwen4ExpTextGatedResidual.forward</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L952">modeling L952</a></td><td>逐元素 read gate 与逐路 write gate</td></tr>
+<tr><td>Qwen4ExpTextPLELayer.forward</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L1169">modeling L1169</a></td><td>n-gram features、stream gating 与 dilated conv</td></tr>
+<tr><td>Qwen4ExpTextModel.forward</td><td><a href="../../../sources/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py#L1337">modeling L1337</a></td><td>mask、position cache、4-stream loop、最终 mix</td></tr>
+<tr><td>DynamicIndexedLayer</td><td><a href="../../../sources/transformers/src/transformers/cache_utils.py#L319">cache_utils L319</a></td><td>dense K/V 外加 indexer key history</td></tr>
 </tbody></table>
 <h3>Editable Excalidraw scenes</h3><ul><li><a href="diagrams/01-top-level.excalidraw">01 top-level</a></li><li><a href="diagrams/02-decoder-linear.excalidraw">02 decoder linear</a></li><li><a href="diagrams/03-decoder-full-attention.excalidraw">03 decoder QSA</a></li><li><a href="diagrams/04-full-attention.excalidraw">04 QSA attention</a></li><li><a href="diagrams/05-gated-deltanet.excalidraw">05 Gated DeltaNet</a></li><li><a href="diagrams/06-moe.excalidraw">06 MoE</a></li><li><a href="diagrams/07-residual-norm.excalidraw">07 Gated Residual + PLE</a></li><li><a href="diagrams/08-kv-cache.excalidraw">08 cache</a></li></ul></section>
 
