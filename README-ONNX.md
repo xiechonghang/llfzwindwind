@@ -8,6 +8,12 @@
 
 使用 Python 3.11 或 3.12，独立安装，避免混用本仓库 `sources/transformers/` 和 `sources/diffusers/` 中用于分析的源码。
 
+从 GitHub 克隆本仓库后，先准备源码子模块：
+
+```bash
+python3 scripts/prepare_sources.py
+```
+
 ```bash
 python3.12 -m venv .venv-onnx
 .venv-onnx/bin/python -m pip install -e '.[export,test]'

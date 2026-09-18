@@ -1,0 +1,14 @@
+{
+  "transformers": {
+    "path": "sources/transformers",
+    "url": "https://github.com/huggingface/transformers.git",
+    "commit": "dbea10932a0e18f40d8103a3bae6fa7927f8d36e",
+    "check_path": "src/transformers"
+  },
+  "diffusers": {
+    "path": "sources/diffusers",
+    "url": "https://github.com/huggingface/diffusers.git",
+    "commit": "09e4f5e4950c4eb156c8b9e5486176c431d53be5",
+    "check_path": "src/diffusers"
+  }
+}
