@@ -1,14 +1,8 @@
 [submodule "sources/transformers"]
 	path = sources/transformers
 	url = https://github.com/huggingface/transformers.git
-[submodule "sources/transformers-v4.53.1"]
-	path = sources/transformers-v4.53.1
-	url = https://github.com/huggingface/transformers.git
 [submodule "sources/diffusers"]
 	path = sources/diffusers
-	url = https://github.com/huggingface/diffusers.git
-[submodule "sources/diffusers-v0.34.0"]
-	path = sources/diffusers-v0.34.0
 	url = https://github.com/huggingface/diffusers.git
 [submodule "sources/HiDream-O1-Image"]
 	path = sources/HiDream-O1-Image
