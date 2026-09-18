@@ -80,7 +80,7 @@ def main():
         "manifest": json.loads((MODEL_DIR / "metadata_manifest.json").read_text()),
     }
     diffusers_commit = git_commit(ROOT / "sources/diffusers")
-    transformers_commit = git_commit(ROOT / "transformers")
+    transformers_commit = git_commit(ROOT / "sources/transformers")
 
     top_graph = svg(920, 760, [
         node("TL1", 20, 30, 235, 70, "prompt / negative_prompt\nT5 token ids [B,M≤512]", True),

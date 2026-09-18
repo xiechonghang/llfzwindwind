@@ -417,7 +417,7 @@ def collect_evidence():
         data=(ROOT/path).read_bytes()
         sources.append(dict(path=path,sha256=hashlib.sha256(data).hexdigest(),lines=len(data.splitlines())))
     commits={name:subprocess.check_output(['git','-C',str(ROOT/path),'rev-parse','HEAD'],text=True).strip()
-             for name,path in [('transformers','transformers'),('diffusers','sources/diffusers')]}
+             for name,path in [('transformers','sources/transformers'),('diffusers','sources/diffusers')]}
     return dict(analysis_date='2026-09-07',model='Wan-AI/Wan2.2-T2V-A14B-Diffusers',
                 revision='5be7df9619b54f4e2667b2755bc6a756675b5cd7',configs=configs,
                 source_commits=commits,source_files=sources,
